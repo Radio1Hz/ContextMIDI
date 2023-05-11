@@ -1,3 +1,27 @@
+# Context MIDI 
+
+Enables players to use white keys as roles in the current context.
+White keys are used as roles in the current key and mode:
+
+```text
+"C" is used always as ROOT
+"D" is used always as SECOND (major second in all keys/modes except Phrygian and Locrian - minor second then)
+"E" is used always as THIRD (minor third in all keys/modes except Ionian, Lydian and Mixolydian - major third then)
+"F" is used always as FOURTH (perfect fourth in all keys/modes except Lydian - augmented then)
+"G" is used always as FIFTH (perfect fifth in all keys/modes except Locrian - augmented then)
+"A" is used always as SIXTH (major sixth in all keys/modes except Phrygian, Aeolian and Locrian - minor then)
+"B" is used always as SEVENTH (minor seventh in all keys/modes except Ionian and Lydian - major then)
+```
+
+![Screenshot](/Assets/Screenshot.png)
+
+MIDI Controllers:
+Ctrl 1: Changes Program
+Ctrl 2: Changes Key
+Crtl 3: Changes Mode
+
+```text
+
 Octave	C	C#	D	D#	E	F	F#	G	G#	A	Bb	B
    -2	0	1	2	3	4	5	6	7	8	9	10	11
    -1	12	13	14	15	16	17	18	19	20	21	22	23
@@ -13,15 +37,16 @@ Octave	C	C#	D	D#	E	F	F#	G	G#	A	Bb	B
 
 Octave
 
-Keys: (Base)
+Keys:
 Display
 C	G	D	A	E	B	F♯	C♯	G♯	D♯	B♭	F
-Math
+Math - offset from C
 0	7	2	9	4	11	6	1	8	3	10	5
 
 Modes:
 Display
-I, II, III, IV, V, VI, VII
+I - Ionian, II - Dorian, III - Phrygian, IV - Lydian, V - Mixolydian, VI - Aeolian, VII - Locrian
+
 Math
 	0	1	2	3	4	5	6	7	8	9	10	11
 	----------------------------------------------
@@ -33,14 +58,14 @@ V	o	.	o	.	o	o	.	o	.	o	o	.
 VI	o	.	o	o	.	o	.	o	o	.	o	.
 VII	o	o	.	o	.	o	o	.	o	.	o	.
 
-Degrees:
+Roles:
 Display
 1, 2, 3, 4, 5, 6, 7
 Math
 	0	1	2	3	4	5	6	7	8	9	10	11
 	----------------------------------------------
 I	0	.	2	.	4	5	.	7	.	9	.	11
-II	0	.	o	3	.	5	.	7	.	9	10	.
+II	0	.	2	3	.	5	.	7	.	9	10	.
 III	0	1	.	3	.	5	.	7	8	.	10	.
 IV	0	.	2	.	4	.	6	7	.	9	.	11
 V	0	.	2	.	4	5	.	7	.	9	10	.
@@ -57,3 +82,4 @@ V	0	2	4	5	7	9	10
 VI	0	2	3	5	7	8	10
 VII	0	1	3	5	6	8	10
 
+```
