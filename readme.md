@@ -15,10 +15,12 @@ White keys are used as roles in the current key and mode:
 
 ![Screenshot](/Assets/Screenshot.png)
 
+```text
 MIDI Controllers:
 Ctrl 1: Changes Program
 Ctrl 2: Changes Key
 Crtl 3: Changes Mode
+```
 
 Writen in JUCE C++ Framework.
 
