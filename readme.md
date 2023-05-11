@@ -20,6 +20,8 @@ Ctrl 1: Changes Program
 Ctrl 2: Changes Key
 Crtl 3: Changes Mode
 
+Writen in JUCE C++ Framework.
+
 ```text
 
 Octave	C	C#	D	D#	E	F	F#	G	G#	A	Bb	B
