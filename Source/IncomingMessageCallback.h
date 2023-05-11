@@ -9,17 +9,18 @@
 */
 #include <JuceHeader.h>
 #include "MainComponent.h"
+#include "ContextMIDIComponent.h"
 
 #pragma once
 class IncomingMessageCallback : public juce::CallbackMessage
 {
 public: 
-    IncomingMessageCallback(MainComponent*, const juce::MidiMessage&,const juce::String&, juce::String&);
+    IncomingMessageCallback(ContextMIDIComponent*, const juce::MidiMessage&, const juce::String&, juce::String&);
     ~IncomingMessageCallback();
     
     void messageCallback() override;
 
-    MainComponent* _parent;
+    ContextMIDIComponent* _parent;
     juce::MidiMessage _message;
     juce::String _source;
     juce::String _additionalInfo;

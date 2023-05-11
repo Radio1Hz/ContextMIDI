@@ -54,6 +54,12 @@ juce::String MusicMath::DisplayModes(int currentModeIndex)
     return out;
 }
 
+std::vector<juce::String> MusicMath::GetKeys()
+{
+    std::vector<juce::String> copyKeys = _keys_display;
+    return copyKeys;
+}
+
 int MusicMath::TranslateKeyIndex(int index)
 {
     if (index > 11 || index < 0)

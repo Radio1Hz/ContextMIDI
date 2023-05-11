@@ -8,10 +8,11 @@
   ==============================================================================
 */
 
-#include "IncomingMessageCallback.h"
 #include "MainComponent.h"
+#include "IncomingMessageCallback.h"
+#include "ContextMIDIComponent.h"
 
-IncomingMessageCallback::IncomingMessageCallback(MainComponent* parent, const juce::MidiMessage& message, const juce::String& source, juce::String& additionalInfo)
+IncomingMessageCallback::IncomingMessageCallback(ContextMIDIComponent* parent, const juce::MidiMessage& message, const juce::String& source, juce::String& additionalInfo)
 {
     this->_parent = parent;
     this->_message = message;

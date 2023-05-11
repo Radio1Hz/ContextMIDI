@@ -17,6 +17,7 @@ public:
     ~MusicMath();
 	juce::String DisplayKeys(int);
 	juce::String DisplayModes(int);
+	std::vector<juce::String> GetKeys();
 	int TranslateKeyIndex(int);
 	int TranslateRoleIndex(const juce::MidiMessage&);
 	int TranslateRoleToModeOffset(int, int);

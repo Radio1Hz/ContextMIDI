@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="OxR1w8" name="ContextMIDI" projectType="guiapp" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" displaySplashScreen="1"
-              companyWebsite="https://github.com/Radio1Hz">
+              companyWebsite="https://github.com/Radio1Hz" version="1.1.0">
   <MAINGROUP id="IWVins" name="ContextMIDI">
     <GROUP id="{690052D0-9180-1D29-2EE0-B25934188283}" name="Classes">
       <FILE id="vOv4GH" name="IncomingMessageCallback.cpp" compile="1" resource="0"
@@ -12,12 +12,14 @@
       <FILE id="ohP7eH" name="MusicMath.cpp" compile="1" resource="0" file="Source/MusicMath.cpp"/>
       <FILE id="OHu5o6" name="MusicMath.h" compile="0" resource="0" file="Source/MusicMath.h"/>
     </GROUP>
-    <GROUP id="{C68C2118-CA48-1AF0-2EE6-3CF2EB3DB2E3}" name="Source">
-      <FILE id="iuMeov" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
-      <FILE id="Io7Rwb" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
-      <FILE id="sFei0U" name="MainComponent.cpp" compile="1" resource="0"
-            file="Source/MainComponent.cpp"/>
-    </GROUP>
+    <FILE id="TeCOLJ" name="ContextMIDIComponent.cpp" compile="1" resource="0"
+          file="Source/ContextMIDIComponent.cpp"/>
+    <FILE id="aj4ZJr" name="ContextMIDIComponent.h" compile="0" resource="0"
+          file="Source/ContextMIDIComponent.h"/>
+    <FILE id="iuMeov" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+    <FILE id="Io7Rwb" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
+    <FILE id="sFei0U" name="MainComponent.cpp" compile="1" resource="0"
+          file="Source/MainComponent.cpp"/>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
   <EXPORTFORMATS>

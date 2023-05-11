@@ -1,4 +1,4 @@
-# Context MIDI 
+# Context MIDI v1.1
 
 Enables players to use white keys as roles in the current context.
 White keys are used as roles in the current key and mode:
@@ -13,16 +13,20 @@ White keys are used as roles in the current key and mode:
 "B" is used always as SEVENTH (minor seventh in all keys/modes except Ionian and Lydian - major then)
 ```
 
-![Screenshot](/Assets/Screenshot.png)
+![Screenshot](/Assets/ScreenshotV1.1.png)
 
 ```text
-MIDI Controllers:
+MIDI Control:
 Ctrl 1: Changes Program
 Ctrl 2: Changes Key
 Crtl 3: Changes Mode
+
+Keyboard Control:
+Arrows <- -> change keys
 ```
 
 Writen in JUCE C++ Framework.
+Install Juicer and open ContextMIDI.juicer.
 
 ```text
 
