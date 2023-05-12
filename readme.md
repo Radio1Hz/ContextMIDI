@@ -22,11 +22,14 @@ Ctrl 2: Changes Key
 Crtl 3: Changes Mode
 
 Keyboard Control:
-Arrows <- -> change keys
+Arrows LEFT and RIGHT change keys
+Arrows UP and DOWN change modes
+
+Functional buttons F1-F12 changes keys in circle of fifth
 ```
 
 Writen in JUCE C++ Framework.
-Install Juicer and open ContextMIDI.juicer.
+Install Juicer and open ContextMIDI.juicer file
 
 
 | Octave | C | C# | D | D# | E | F | F# | G | G# | A | Bb | B |
