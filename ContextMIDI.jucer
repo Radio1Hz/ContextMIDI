@@ -12,6 +12,10 @@
       <FILE id="ohP7eH" name="MusicMath.cpp" compile="1" resource="0" file="Source/MusicMath.cpp"/>
       <FILE id="OHu5o6" name="MusicMath.h" compile="0" resource="0" file="Source/MusicMath.h"/>
     </GROUP>
+    <FILE id="SiCITI" name="ContextMIDIKeyboard.cpp" compile="1" resource="0"
+          file="Source/ContextMIDIKeyboard.cpp"/>
+    <FILE id="F7PmNo" name="ContextMIDIKeyboard.h" compile="0" resource="0"
+          file="Source/ContextMIDIKeyboard.h"/>
     <FILE id="PxaGYL" name="ModeButton.cpp" compile="1" resource="0" file="Source/ModeButton.cpp"/>
     <FILE id="sBaGSe" name="ModeButton.h" compile="0" resource="0" file="Source/ModeButton.h"/>
     <FILE id="A1yr6s" name="KeyButton.cpp" compile="1" resource="0" file="Source/KeyButton.cpp"/>

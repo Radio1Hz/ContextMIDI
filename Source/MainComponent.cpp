@@ -21,10 +21,10 @@ void MainComponent::paint (juce::Graphics& g)
 
 void MainComponent::resized()
 {
-    juce::Rectangle<int> boundsRectangle(0, 0, this->getWidth()-200, this->getHeight()-200);
+    juce::Rectangle<int> boundsRectangle(0, 0, this->getWidth(), this->getHeight());
     boundsRectangle.setCentre(juce::roundToInt(this->getWidth()/2), juce::roundToInt(this->getHeight()/2));
     
     contextMIDIComponent.setBounds(boundsRectangle);
     contextMIDIComponent.setAlwaysOnTop(true);
-
+    contextMIDIComponent.setFocusContainer(true);
 }

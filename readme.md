@@ -1,7 +1,8 @@
-# Context MIDI v1.2
+# Context MIDI v1.3
 
 Enables players to use white keys as roles in the current context.
 White keys are used as roles in the current key and mode:
+(Red - ROOT, Green - FIFTH)
 
 ```text
 "C" is used always as ROOT
@@ -13,7 +14,7 @@ White keys are used as roles in the current key and mode:
 "B" is used always as SEVENTH (minor seventh in all keys/modes except Ionian and Lydian - major then)
 ```
 
-![Screenshot](/Assets/ScreenshotV1.2.png)
+![Screenshot](/Assets/ScreenshotV1.3.png)
 
 ```text
 MIDI Control:

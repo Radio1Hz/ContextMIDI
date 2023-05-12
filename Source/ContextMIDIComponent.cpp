@@ -11,11 +11,11 @@
 #include "ContextMIDIComponent.h"
 #include "IncomingMessageCallback.h"
 #include "KeyButton.h"
+#include "ContextMIDIKeyboard.h"
 
 ContextMIDIComponent::ContextMIDIComponent() : keyboardComponent(keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard),
 startTime(juce::Time::getMillisecondCounterHiRes() * 0.001)
 {
-
     currentProgramNr = defaultProgramNr;
     allNotesOffMsg = juce::MidiMessage::allNotesOff(1);
     defaultPrgMessage = juce::MidiMessage::programChange(1, currentProgramNr);

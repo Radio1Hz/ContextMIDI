@@ -111,11 +111,24 @@ juce::String MusicMath::GetChordName(int keyIndex, int modeIndex)
         chordName += "dim";
     return chordName;
 }
+
+juce::String MusicMath::GetNoteName(int noteRoleIndex, int currentKeyIndex, int currentModeIndex)
+{
+    int realNoteNumber = _keys_offset[currentKeyIndex] + _modes_offset[0][currentModeIndex] + _modes_offset[currentModeIndex][noteRoleIndex];
+    juce::String noteName = juce::MidiMessage::getMidiNoteName(realNoteNumber, true, false, 3);
+    return noteName;
+}
+
 // Input: MidiNoteNumber (60, 61, 62...) Output: Role in the scale (white keys index 0, 1, 2, 3 [root, second, third...]) 
 // Returns -1 if black key
 int MusicMath::TranslateRoleIndex(const juce::MidiMessage& midiNote) 
 {
-    int moduoNumber = midiNote.getNoteNumber() % 12;
+    return GetRoleByNoteNumber(midiNote.getNoteNumber());
+}
+
+int MusicMath::GetRoleByNoteNumber(int noteNumber)
+{
+    int moduoNumber = noteNumber % 12;
     if (!juce::MidiMessage::isMidiNoteBlack(moduoNumber))
     {
         switch (moduoNumber)

@@ -11,6 +11,7 @@
 #include "MusicMath.h"
 #include "KeyButton.h"
 #include "ModeButton.h"
+#include "ContextMIDIKeyboard.h"
 
 #pragma once
 class ContextMIDIComponent : public juce::Component, public juce::MidiInputCallback, public juce::MidiKeyboardStateListener, public juce::KeyListener
@@ -37,7 +38,7 @@ public:
     juce::MidiMessage allNotesOffMsg;
     juce::MidiMessage defaultPrgMessage;
     juce::MidiKeyboardState keyboardState;
-    juce::MidiKeyboardComponent keyboardComponent;
+    ContextMIDIKeyboard keyboardComponent;
     juce::MidiMessageSequence midiMessagesSequence;
     std::unique_ptr<juce::MidiOutput> midiOutput;
     juce::Array<juce::MidiDeviceInfo> midiInputs;

@@ -27,6 +27,8 @@ public:
 	int TranslateKeyIndex(int);
 	int TranslateRoleIndex(const juce::MidiMessage&);
 	int TranslateRoleToModeOffset(int, int);
+	int GetRoleByNoteNumber(int noteNumber);
+	juce::String GetNoteName(int noteRoleIndex, int currentKeyIndex, int currentModeIndex);
 
 private:
     std::vector<int> _keys_offset = { 0, 7, 2, 9, 4, 11, 6, 1, 8, 3, 10, 5 };
