@@ -60,6 +60,12 @@ std::vector<juce::String> MusicMath::GetKeys()
     return copyKeys;
 }
 
+std::vector<juce::String> MusicMath::GetModes()
+{
+    std::vector<juce::String> copyModes = _modes_display_degrees;
+    return copyModes;
+}
+
 int MusicMath::TranslateKeyIndex(int index)
 {
     if (index > 11 || index < 0)
@@ -80,6 +86,30 @@ int MusicMath::TranslateRoleToModeOffset(int roleIndex, int modeIndex)
     }
     
     return _modes_offset[modeIndex][roleIndex];
+}
+
+juce::String MusicMath::GetKeyName(int keyIndex)
+{
+    return _keys_display[keyIndex];
+}
+
+juce::String MusicMath::GetModeName(int modeIndex)
+{
+    return _modes_display[modeIndex];
+}
+juce::String MusicMath::GetModeDegree(int modeIndex)
+{
+    return _modes_display_degrees[modeIndex];
+}
+juce::String MusicMath::GetChordName(int keyIndex, int modeIndex)
+{
+    int realNoteNumber = _keys_offset[keyIndex] + _modes_offset[0][modeIndex];
+    juce::String chordName = juce::MidiMessage::getMidiNoteName(realNoteNumber, true, false, 3);
+    if (modeIndex == 1 || modeIndex == 2 || modeIndex == 5)
+        chordName += "m";
+    if (modeIndex == 6)
+        chordName += "dim";
+    return chordName;
 }
 // Input: MidiNoteNumber (60, 61, 62...) Output: Role in the scale (white keys index 0, 1, 2, 3 [root, second, third...]) 
 // Returns -1 if black key

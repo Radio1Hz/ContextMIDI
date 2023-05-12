@@ -9,6 +9,8 @@
 */
 #include <JuceHeader.h>
 #include "MusicMath.h"
+#include "KeyButton.h"
+#include "ModeButton.h"
 
 #pragma once
 class ContextMIDIComponent : public juce::Component, public juce::MidiInputCallback, public juce::MidiKeyboardStateListener, public juce::KeyListener
@@ -27,6 +29,8 @@ public:
     juce::Label modeLabel;
     juce::Label midiInputLabel;
     juce::Label midiOutputLabel;
+    juce::Label chordNameLabel;
+    juce::Label chordModeLabel;
 
     juce::TextEditor midiMessagesBox;
 
@@ -39,8 +43,8 @@ public:
     juce::Array<juce::MidiDeviceInfo> midiInputs;
     juce::Array<juce::MidiDeviceInfo> midiOutputs;
 
-    juce::OwnedArray<juce::TextButton> keysButtonsArray;
-    juce::OwnedArray<juce::TextButton> modesButtonsArray;
+    juce::OwnedArray<KeyButton> keysButtonsArray;
+    juce::OwnedArray<ModeButton> modesButtonsArray;
 
     int lastInputIndex = 0;
     bool isAddingFromMidiInput = false;

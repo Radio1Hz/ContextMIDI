@@ -10,6 +10,7 @@
 
 #include "ContextMIDIComponent.h"
 #include "IncomingMessageCallback.h"
+#include "KeyButton.h"
 
 ContextMIDIComponent::ContextMIDIComponent() : keyboardComponent(keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard),
 startTime(juce::Time::getMillisecondCounterHiRes() * 0.001)
@@ -30,6 +31,7 @@ startTime(juce::Time::getMillisecondCounterHiRes() * 0.001)
     addAndMakeVisible(modeLabel);
     addAndMakeVisible(midiInputLabel);
     addAndMakeVisible(midiOutputLabel);
+    
     setWantsKeyboardFocus(true);
 }
 
@@ -46,9 +48,11 @@ void ContextMIDIComponent::setGUIElements()
     programNrLabel.setText("Program: " + juce::String(currentProgramNr), juce::dontSendNotification);
     midiInputLabel.setText("Midi In:", juce::dontSendNotification);
     midiOutputLabel.setText("Midi Out:", juce::dontSendNotification);
-    //keyLabel.setText(mathObj.DisplayKeys(currentKey), juce::dontSendNotification);
     modeLabel.setText(mathObj.DisplayModes(currentModeIndex), juce::dontSendNotification);
-
+    chordNameLabel.setJustificationType(juce::Justification::centred);
+    chordModeLabel.setJustificationType(juce::Justification::centred);
+    chordNameLabel.setFont(juce::Font(40.0f, 0));
+    chordModeLabel.setFont(juce::Font(12.0f, 0));
     midiInputs = juce::MidiInput::getAvailableDevices();
     midiOutputs = juce::MidiOutput::getAvailableDevices();
 
@@ -93,7 +97,8 @@ void ContextMIDIComponent::setGUIElements()
         midiOutput = juce::MidiOutput::openDevice(midiOutputs[0].identifier);
         midiOutput->sendMessageNow(defaultPrgMessage);
     }
-
+    
+    
     createContextButtons();
     setKeyGUIElements();
     keyboardState.addListener(this);
@@ -101,14 +106,14 @@ void ContextMIDIComponent::setGUIElements()
 }
 void ContextMIDIComponent::createContextButtons()
 {
-    
-    std::vector<juce::String> vector = mathObj.GetKeys();
+    addAndMakeVisible(chordNameLabel);
+    addAndMakeVisible(chordModeLabel);
+    std::vector<juce::String> keysVector = mathObj.GetKeys();
     int index = 0;
-    for (juce::String str : vector)
+    for (juce::String str : keysVector)
     {
-        juce::TextButton* keyButton = new juce::TextButton(str);
-        keyButton->setName(juce::String(index));
-        keyButton->setColour(juce::TextButton::ColourIds::buttonOnColourId, juce::Colours::darkorange);
+        KeyButton* keyButton = new KeyButton(index);
+       
         keyButton->onClick = [this, index] {
             currentKeyIndex = index;
             currentKey = mathObj.TranslateKeyIndex(currentKeyIndex);
@@ -119,8 +124,23 @@ void ContextMIDIComponent::createContextButtons()
         addAndMakeVisible(keyButton);
         index++;
     }
+
+    std::vector<juce::String> modesVector = mathObj.GetModes();
+    index = 0;
+    for (juce::String str : modesVector)
+    {
+        ModeButton* modeButton = new ModeButton(index);
+
+        modeButton->onClick = [this, index] {
+            currentModeIndex = index;
+            setKeyGUIElements();
+        };
+
+        modesButtonsArray.add(modeButton);
+        addAndMakeVisible(modeButton);
+        index++;
+    }
     
-    //modesButtonsArray
 }
 void ContextMIDIComponent::handleNoteOn(juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity)
 {
@@ -233,15 +253,17 @@ juce::String ContextMIDIComponent::getMidiMessageDescription(const juce::MidiMes
             auto prgChgMsg = juce::MidiMessage::programChange(1, currentProgramNr);
             programNrLabel.setText("Program: " + juce::String(currentProgramNr), juce::dontSendNotification);
             midiOutput->sendMessageNow(prgChgMsg);
+            keyboardState.allNotesOff(1);
             repaint();
             break;
         }
         case 2:
         {
             int value = m.getControllerValue();
-            currentKeyIndex = juce::roundToInt((value / 127.0) * 11);
-            if (currentKey != mathObj.TranslateKeyIndex(currentKeyIndex))
+            value = juce::roundToInt((m.getControllerValue() / 127.0) * 11);
+            if (value != currentKeyIndex)
             {
+                currentKeyIndex = value;
                 currentKey = mathObj.TranslateKeyIndex(currentKeyIndex);
                 setKeyGUIElements();
             }
@@ -254,9 +276,8 @@ juce::String ContextMIDIComponent::getMidiMessageDescription(const juce::MidiMes
             if (value != currentModeIndex)
             {
                 currentModeIndex = value;
-                modeLabel.setText(mathObj.DisplayModes(currentModeIndex), juce::dontSendNotification);
-                repaint();
-                midiOutput->sendMessageNow(this->allNotesOffMsg);
+                setKeyGUIElements();
+                
             }
             break;
         }
@@ -274,9 +295,10 @@ void ContextMIDIComponent::setKeyGUIElements()
 {
     keyLabel.setText(mathObj.DisplayKeys(currentKey), juce::dontSendNotification);
     int index = 0;
-    for (juce::TextButton* btn : keysButtonsArray)
+    juce::String keyButtonName = "key_" + juce::String(currentKeyIndex);
+    for (KeyButton* btn : keysButtonsArray)
     {
-        if (btn->getName() == juce::String(currentKeyIndex))
+        if (btn->getName().equalsIgnoreCase(keyButtonName))
         {
             btn->setToggleState(true, juce::dontSendNotification);
         }
@@ -286,13 +308,78 @@ void ContextMIDIComponent::setKeyGUIElements()
         }
         index++;
     }
+    index = 0;
+    juce::String modeButtonName = "mode_" + juce::String(currentModeIndex);
+    for (ModeButton* btn : modesButtonsArray)
+    {
+        if (btn->getName().equalsIgnoreCase(modeButtonName))
+        {
+            btn->setToggleState(true, juce::dontSendNotification);
+        }
+        else
+        {
+            btn->setToggleState(false, juce::dontSendNotification);
+        }
+        index++;
+    }
+    modeLabel.setText(mathObj.DisplayModes(currentModeIndex), juce::dontSendNotification);
+    chordNameLabel.setText(mathObj.GetChordName(currentKeyIndex, currentModeIndex), juce::dontSendNotification);
+    chordModeLabel.setText(mathObj.GetModeName(currentModeIndex), juce::dontSendNotification);
     midiOutput->sendMessageNow(this->allNotesOffMsg);
     repaint();
-    
 }
 
-bool ContextMIDIComponent::keyPressed(const juce::KeyPress& key, juce::Component* originatingComponent)
+bool ContextMIDIComponent::keyPressed(const juce::KeyPress& key, juce::Component* /*originatingComponent*/)
 {
+    if (key == juce::KeyPress::F1Key)
+    {
+        currentKeyIndex = 0;
+    }
+    if (key == juce::KeyPress::F2Key)
+    {
+        currentKeyIndex = 1;
+    }
+    if (key == juce::KeyPress::F3Key)
+    {
+        currentKeyIndex = 2;
+    }
+    if (key == juce::KeyPress::F4Key)
+    {
+        currentKeyIndex = 3;
+    }
+    if (key == juce::KeyPress::F5Key)
+    {
+        currentKeyIndex = 4;
+    }
+    if (key == juce::KeyPress::F6Key)
+    {
+        currentKeyIndex = 5;
+    }
+    if (key == juce::KeyPress::F7Key)
+    {
+        currentKeyIndex = 6;
+    }
+    if (key == juce::KeyPress::F8Key)
+    {
+        currentKeyIndex = 7;
+    }
+    if (key == juce::KeyPress::F9Key)
+    {
+        currentKeyIndex = 8;
+    }
+    if (key == juce::KeyPress::F10Key)
+    {
+        currentKeyIndex = 9;
+    }
+    if (key == juce::KeyPress::F11Key)
+    {
+        currentKeyIndex = 10;
+    }
+    if (key == juce::KeyPress::F12Key)
+    {
+        currentKeyIndex = 11;
+    }
+
     if (key == juce::KeyPress::rightKey)
     {
         currentKeyIndex = (++currentKeyIndex) % 12;
@@ -303,13 +390,25 @@ bool ContextMIDIComponent::keyPressed(const juce::KeyPress& key, juce::Component
         currentKeyIndex--;
         if (currentKeyIndex < 0)currentKeyIndex = 11;
     }
+
+    if (key == juce::KeyPress::upKey)
+    {
+        currentModeIndex = (++currentModeIndex) % 7;
+    }
+
+    if (key == juce::KeyPress::downKey)
+    {
+        currentModeIndex--;
+        if (currentModeIndex < 0)currentModeIndex = 6;
+    }
+
     currentKey = mathObj.TranslateKeyIndex(currentKeyIndex);
     setKeyGUIElements();
     return true;
 };
-bool ContextMIDIComponent::keyStateChanged(bool isKeyDown, juce::Component* originatingComponent)
+bool ContextMIDIComponent::keyStateChanged(bool isKeyDown, juce::Component* /*originatingComponent*/)
 {
-    return true;
+    return isKeyDown;
 }
 
 void ContextMIDIComponent::paint(juce::Graphics& g)
@@ -332,10 +431,43 @@ void ContextMIDIComponent::resized()
 
     midiMessagesBox.setBounds(0, this->getHeight() - 25, this->getWidth(), 25);
 
+    // Draw key buttons in circle
     int index = 0;
-    for (juce::TextButton* btn : keysButtonsArray)
+    int radius = 150;
+    int x;
+    int y;
+
+    juce::Rectangle<int> keyBounds(0, 0, radius*2, radius*2);
+    keyBounds.setCentre(this->getWidth()/2, this->getHeight()/2);
+    keyBounds.setTop(300);
+    juce::Point<int> centerPoint(keyBounds.getCentre());
+    float PI = juce::MathConstants<float>::pi;
+
+    for (KeyButton* btn : keysButtonsArray)
     {
-        btn->setBounds(index * 40, 200, 35, 25);
+        x = juce::roundToInt(centerPoint.getX() + radius * std::sin(2 * PI * index / 12.0f));
+        y = juce::roundToInt(centerPoint.getY() - radius * std::cos(2 * PI * index / 12.0f));
+
+        juce::Rectangle<int> currentButtonRect(x - btn->size/2, y - btn->size / 2, btn->size, btn->size);
+        btn->setBounds(currentButtonRect);
         index++;
     }
+
+    // Draw mode buttons in circle
+    index = 0;
+    radius = 80;
+
+    for (ModeButton* btn : modesButtonsArray)
+    {
+        x = juce::roundToInt(centerPoint.getX() + radius * std::sin(2 * PI * index / 7.0f));
+        y = juce::roundToInt(centerPoint.getY() - radius * std::cos(2 * PI * index / 7.0f));
+
+        juce::Rectangle<int> currentButtonRect(x - btn->size / 2, y - btn->size / 2, btn->size, btn->size);
+        btn->setBounds(currentButtonRect);
+        index++;
+    }
+
+    chordNameLabel.setBounds(keyBounds);
+    keyBounds.translate(0, 25);
+    chordModeLabel.setBounds(keyBounds);
 }

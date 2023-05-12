@@ -17,10 +17,17 @@ public:
     ~MusicMath();
 	juce::String DisplayKeys(int);
 	juce::String DisplayModes(int);
+	juce::String GetKeyName(int);
+	juce::String GetModeName(int);
+	juce::String GetModeDegree(int);
+	juce::String GetChordName(int keyIndex, int modeIndex);
 	std::vector<juce::String> GetKeys();
+	std::vector<juce::String> GetModes();
+
 	int TranslateKeyIndex(int);
 	int TranslateRoleIndex(const juce::MidiMessage&);
 	int TranslateRoleToModeOffset(int, int);
+
 private:
     std::vector<int> _keys_offset = { 0, 7, 2, 9, 4, 11, 6, 1, 8, 3, 10, 5 };
 	std::vector<juce::String> _keys_display = { "C", "G", "D", "A", "E", "B", "F#", "C#", "G#", "D#", "Bb", "F" };
@@ -33,9 +40,10 @@ private:
 											{0, 2, 3, 5, 7, 8, 10},
 											{0, 1, 3, 5, 6, 8, 10}
 										};
-	std::vector<juce::String> _modes_display = { "I - Ionian", "II - Dorian", "III - Phrygian", "IV - Lydian", "V - Mixolydian", "VI - Aeolian", "VII - Locrian" };
+	std::vector<juce::String> _modes_display = { "Ionian", "Dorian", "Phrygian", "Lydian", "Mixolydian", "Aeolian", "Locrian" };
+	std::vector<juce::String> _modes_display_degrees = { "I", "II", "III", "IV", "V", "VI", "VII" };
 };
-
+//int realNoteNumber = _keys_offset[keyIndex] + _modes_offset[0][modeIndex];
 /*
 
 Octave	C	C#	D	D#	E	F	F#	G	G#	A	Bb	B

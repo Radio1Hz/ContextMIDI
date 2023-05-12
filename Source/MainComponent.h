@@ -14,7 +14,7 @@ class MainComponent  : public juce::Component
 public:
     //==============================================================================
     MainComponent();
-    ~MainComponent() override;
+    ~MainComponent();
     //
     ContextMIDIComponent contextMIDIComponent;
     //
