@@ -11,7 +11,14 @@
 #include "MusicMath.h"
 MusicMath::MusicMath()
 {
-
+    BPM = 120; 
+    TPQN = 96;          // 96 ticks per quarter note (per beat)
+    Tb = 60.0 / BPM;    // Tb length of quarter note in seconds
+    Tt = Tb / TPQN;     // Tt length of one tick in seconds
+    
+    // Quarter Note length = 500ms
+    // Total ticks per minute = BPM * TPQN = 120 * 96 = 11520 ticks per minute
+    // Tick length in ms = 60000/11520 = 500ms/96 = 5.21 ms
 }
 
 MusicMath::~MusicMath()
@@ -92,6 +99,10 @@ juce::String MusicMath::GetKeyName(int keyIndex)
 {
     return _keys_display[keyIndex];
 }
+juce::Colour MusicMath::GetKeyColour(int keyIndex)
+{
+    return _keys_colour_codes[keyIndex];
+}
 
 juce::String MusicMath::GetModeName(int modeIndex)
 {
@@ -159,6 +170,69 @@ int MusicMath::GetRoleByNoteNumber(int noteNumber)
         }
     }
     return -1;
+}
+
+void MusicMath::saveMidiPattern(juce::MidiMessageSequence midiSequence)
+{
+    juce::MidiFile midiFile;
+    midiFile.setTicksPerQuarterNote(TPQN);
+    juce::File folder(ROOT_PATH);
+
+    if(!folder.exists())
+    {
+        folder.createDirectory();
+    }
+
+    juce::File outMidiFile(ROOT_PATH + juce::String(juce::Time::currentTimeMillis() / 1000) + ".mid");
+    juce::FileOutputStream outputStream(outMidiFile);
+
+    midiFile.addTrack(midiSequence);
+    midiFile.writeTo(outputStream, 0);
+    outputStream.flush();
+}
+
+double MusicMath::GetNumberOfTicksElapsed(juce::int64 startTimestamp)
+{
+    juce::int64 currentTimestamp(juce::Time::currentTimeMillis());
+    double deltaTimestamp = currentTimestamp * 1.0 - startTimestamp * 1.0; // deltaTimestamp is mesured in milliseconds
+    return deltaTimestamp / (Tt * 1000); // Tt is length of one tick in seconds. Multiplied with 1000 to get milliseconds.
+}
+void MusicMath::saveMidiPatternTest()
+{
+    // beatCount: quarter notes
+    // 16 quarter notes = 4 x 4 quarter notes = 4 whole notes
+    // Song length = 16 beats x Tb = 16 x 60/BPM = 16 x 0,5s = 8s
+
+    juce::MidiMessageSequence midiSequence;
+
+    double noteLength = TPQN; // length of all notes is 1/4 in ticks
+    
+    juce::Random rnd;
+
+    for (int beatCount = 0; beatCount < 16; beatCount++) {
+
+        int note1 = 62 + _modes_offset[1][rnd.nextInt(6)];
+
+        juce::MidiMessage midiOnMessage1 = juce::MidiMessage::noteOn(1, note1, 1.0f);
+        juce::MidiMessage midiOffMessage1 = juce::MidiMessage::noteOff(1, note1, 0.0f);
+
+        midiOnMessage1.setTimeStamp(TPQN * beatCount);
+        midiOffMessage1.setTimeStamp(TPQN * beatCount + noteLength);
+
+        midiSequence.addEvent(midiOnMessage1);
+        midiSequence.addEvent(midiOffMessage1);
+        midiSequence.updateMatchedPairs();
+    }
+
+    juce::MidiFile midiFile;
+    midiFile.setTicksPerQuarterNote(TPQN);
+
+    juce::File outMidiFile(ROOT_PATH + juce::String(juce::Time::currentTimeMillis()/1000) + ".mid");
+    juce::FileOutputStream outputStream(outMidiFile);
+
+    midiFile.addTrack(midiSequence);
+    midiFile.writeTo(outputStream, 0);
+    outputStream.flush();
 }
 
 /*

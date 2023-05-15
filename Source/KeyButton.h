@@ -19,6 +19,7 @@ public:
     KeyButton(int keyIndex);
     ~KeyButton();
 
+    int keyIndex;
     void paint(juce::Graphics&) override;
 
     MusicMath mathObj;

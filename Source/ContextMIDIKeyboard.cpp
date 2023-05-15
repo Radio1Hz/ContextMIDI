@@ -27,6 +27,7 @@ void ContextMIDIKeyboard::drawWhiteNote(int midiNoteNumber, juce::Graphics& g, j
     
     ContextMIDIComponent* parent = dynamic_cast<ContextMIDIComponent*> (getParentComponent());  
     int noteRoleIndex = mathObj.GetRoleByNoteNumber(midiNoteNumber);
+
     if (noteRoleIndex == 0) //ROOT
     {
         g.setColour(juce::Colour::fromRGBA(128, 0, 0, 50));
@@ -42,15 +43,18 @@ void ContextMIDIKeyboard::drawWhiteNote(int midiNoteNumber, juce::Graphics& g, j
         g.setColour(juce::Colour::fromRGBA(128, 128, 0, 75));
         g.fillRect(area);
     }
+
     juce::Rectangle drawingRect = area;
     drawingRect.setHeight(15);
     drawingRect.setBottom(area.getBottom());
+
     g.setColour(textColour);
     g.setFont(11);
     
     g.drawText(juce::String(noteRoleIndex + 1), drawingRect, juce::Justification::centredBottom);
     drawingRect.translate(0, -15);
     g.drawText(mathObj.GetNoteName(noteRoleIndex, parent->currentKeyIndex, parent->currentModeIndex), drawingRect, juce::Justification::centredBottom);
+
     juce::Line<float> line(area.getTopRight(), area.getBottomRight());
     g.drawLine(line, 1.0);
 }

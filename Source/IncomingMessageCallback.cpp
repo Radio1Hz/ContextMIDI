@@ -27,5 +27,5 @@ IncomingMessageCallback::~IncomingMessageCallback()
 
 void IncomingMessageCallback::messageCallback()
 {
-    _parent->addMessageToList(this->_message, this->_source, this->_additionalInfo);   
+    _parent->displayMessageInfo(this->_message, this->_source, this->_additionalInfo);   
 }

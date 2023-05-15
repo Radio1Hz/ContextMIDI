@@ -14,7 +14,7 @@
 #include "ContextMIDIKeyboard.h"
 
 #pragma once
-class ContextMIDIComponent : public juce::Component, public juce::MidiInputCallback, public juce::MidiKeyboardStateListener, public juce::KeyListener
+class ContextMIDIComponent : public juce::Component, public juce::MidiInputCallback, public juce::MidiKeyboardStateListener, public juce::KeyListener, public juce::Timer
 {
 public:
     ContextMIDIComponent();
@@ -49,7 +49,7 @@ public:
 
     int lastInputIndex = 0;
     bool isAddingFromMidiInput = false;
-    double startTime;
+    juce::int64 startTimestamp;
     int defaultProgramNr = 67; //70
     int currentProgramNr = 67;
     int currentKey = 0;
@@ -60,16 +60,22 @@ public:
 
     //==============================================================================
     void paint(juce::Graphics&) override;
+    void timerCallback() override;
     void resized() override;
     void setMidiInput(int);
-    void setGUIElements();
-    void setKeyGUIElements();
+    void updateGUI();
     void handleIncomingMidiMessage(juce::MidiInput*, const juce::MidiMessage&) override;
     void handleNoteOn(juce::MidiKeyboardState*, int, int, float) override;
     void handleNoteOff(juce::MidiKeyboardState*, int, int, float) override;
-    void postMessageToList(const juce::MidiMessage&, const juce::String&);
-    void addMessageToList(const juce::MidiMessage&, const juce::String&, juce::String&);
+    void processMidiMessage(const juce::MidiMessage&, const juce::String&);
+    void displayMessageInfo(juce::MidiMessage&, const juce::String&, juce::String&);
     void createContextButtons();
+    void initGUIElements();
+    void keyChanged();
+    void modeChanged();
+    void ProgramChanged();
+    void SendMessageToMidiOut(juce::MidiMessage& message);
+    void SendMessageToMidiSequence(juce::MidiMessage& message);
     juce::String getMidiMessageDescription(const juce::MidiMessage&);
     //==============================================================================
 /** Called to indicate that a key has been pressed.

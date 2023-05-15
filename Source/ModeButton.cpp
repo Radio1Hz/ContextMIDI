@@ -30,7 +30,7 @@ void ModeButton::paint(juce::Graphics& g)
     g.setColour(juce::Colour::fromRGBA(0, 0, 0, 128));
     if (this->getToggleState())
     {
-        g.setColour(juce::Colour::fromRGBA(255, 0, 0, 128));
+        g.setColour(juce::Colour::fromRGBA(90, 90, 90, 128));
     }
     g.fillEllipse(rect);
     g.setColour(juce::Colours::lightgrey);

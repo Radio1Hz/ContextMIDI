@@ -26,5 +26,4 @@ void MainComponent::resized()
     
     contextMIDIComponent.setBounds(boundsRectangle);
     contextMIDIComponent.setAlwaysOnTop(true);
-    contextMIDIComponent.setFocusContainer(true);
 }
