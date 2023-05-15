@@ -1,4 +1,4 @@
-# Context MIDI v1.3
+# Context MIDI v1.4
 
 Enables players to use white keys as roles in the current context.
 White keys are used as roles in the current key and mode:
@@ -14,7 +14,7 @@ White keys are used as roles in the current key and mode:
 "B" is used always as SEVENTH (minor seventh in all keys/modes except Ionian and Lydian - major then)
 ```
 
-![Screenshot](/Assets/ScreenshotV1.3.png)
+![Screenshot](/Assets/ScreenshotV1.4.png)
 
 ```text
 MIDI Control:
@@ -23,10 +23,10 @@ Ctrl 2: Changes Key
 Crtl 3: Changes Mode
 
 Keyboard Control:
-Arrows LEFT and RIGHT change keys
-Arrows UP and DOWN change modes
-
-Functional buttons F1-F12 changes keys in circle of fifth
+- Arrows LEFT and RIGHT change keys
+- Arrows UP and DOWN change modes
+- Functional buttons F1-F12 changes keys in circle of fifth
+- Backspace saves captured MIDI messages to midi file on C:/temp/[timestamp].mid
 ```
 
 Writen in JUCE C++ Framework.
